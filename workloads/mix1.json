@@ -1,0 +1,5 @@
+{
+  "cpu_bound": 2,
+  "io_bound": 2,
+  "mem_bound": 1
+}

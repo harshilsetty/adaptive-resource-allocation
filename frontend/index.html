@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adaptive Resource Allocation System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="theme-toggle-wrapper">
+    <button id="themeToggle" class="btn small">Toggle theme</button>
+  </div>
+
+  <main class="container">
+    <header class="card header-card">
+      <div class="title-row">
+        <img src="assets/logo.png" alt="logo" class="logo" onerror="this.style.display='none'"/>
+        <h1>Adaptive Resource Allocation System</h1>
+      </div>
+      <!-- <p class="subtitle">Demo UI that sends inputs to your Flask backend at <code>/allocate</code>.</p> -->
+    </header>
+
+    <section class="card form-card">
+      <h2>Input Parameters</h2>
+
+      <div class="inputs-grid">
+        <div class="field">
+          <label for="numResources">Number of resources</label>
+          <input id="numResources" type="number" min="1" value="3" />
+        </div>
+
+        <div class="field">
+          <label for="capacities">Resource capacities (comma-separated)</label>
+          <input id="capacities" type="text" placeholder="e.g. 10,20,15" />
+        </div>
+
+        <div class="field">
+          <label for="numTasks">Number of tasks</label>
+          <input id="numTasks" type="number" min="1" value="4" />
+        </div>
+
+        <div class="field">
+          <label for="demands">Task demands (comma-separated)</label>
+          <input id="demands" type="text" placeholder="e.g. 4,6,11,8" />
+        </div>
+
+        <div class="field">
+          <label for="algorithm">Algorithm (for demo / switch backend)</label>
+          <select id="algorithm">
+            <option value="round_robin">Round Robin</option>
+            <option value="heuristic">Heuristic</option>
+            <option value="greedy">Greedy</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="runBtn" class="btn primary">Run Allocation</button>
+        <button id="clearBtn" class="btn">Clear</button>
+        <button id="exportBtn" class="btn" style="display:none;">Download CSV</button>
+        <div id="spinner" class="spinner" aria-hidden="true"></div>
+      </div>
+
+      <div id="message" class="message" role="status"></div>
+    </section>
+
+    <section class="card results-card" id="resultsSection" aria-live="polite">
+      <h2>Allocation Results</h2>
+      <div id="resultsContainer" class="results-container">
+        <p class="muted">No results yet. Click <strong>Run Allocation</strong> to start.</p>
+      </div>
+
+      <div id="capacityContainer" class="results-container" style="margin-top:12px; display:none;">
+        <h3 style="margin-top:0;color:var(--muted);font-size:14px">Resource Status</h3>
+        <div id="capacityList" class="muted"></div>
+      </div>
+
+      <div id="chartCard" class="card" style="margin-top:16px; display:none;">
+        <h3 style="margin-top:0;color:var(--muted);font-size:14px">Allocation Chart</h3>
+        <canvas id="allocChart" width="600" height="300"></canvas>
+      </div>
+    </section>
+
+<footer class="footer">
+  <p>© 2025 Adaptive Resource Allocation System · CSE316 Mini Project</p>
+</footer>
+
+  </main>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

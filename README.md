@@ -139,19 +139,9 @@ POST /allocate
 
 ---
 
-## 6. Viva Demo Script (60–90 seconds)
 
-1. This is the Adaptive Resource Allocation System developed for CSE316.  
-2. The backend uses Flask and exposes a POST endpoint at `/allocate`.  
-3. The frontend takes user inputs, sends them to the backend, and displays results in a table and bar chart.  
-4. When I click Run Allocation, the backend processes the request and returns the mapping of tasks to resources.  
-5. The UI also shows remaining capacities and overloads.  
-6. The system supports CSV export, auto-filled values, and persistent inputs.  
-7. This project is modular and allows easy extension of allocation strategies.
 
----
-
-## 7. Troubleshooting
+## 6. Troubleshooting
 
 ### Browser says “connection refused”
 Backend not running. Start:
@@ -170,11 +160,6 @@ resource_allocation.py
 
 ---
 
-## 8. Optional — Host Frontend on GitHub Pages
-To host only the static UI:
-```bash
-git subtree push --prefix frontend origin gh-pages
-```
 
 Page will be available at:
 ```
@@ -183,7 +168,7 @@ https://harshilsetty.github.io/adaptive-resource-allocation/
 
 ---
 
-## 9. License
+## 7. License
 Created as part of the CSE316 course.  
 Free to reuse for learning and portfolio purposes.
 

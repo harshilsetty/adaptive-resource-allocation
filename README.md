@@ -1,138 +1,189 @@
-# Adaptive Resource Allocation in Multiprogramming Systems  
-CSE316 — Operating Systems  
-CA2 Project • Lovely Professional University  
+# Adaptive Resource Allocation System  
+CSE316 Mini Project — Final Implementation  
+Author: **Harshil Somisetty**
 
 ---
 
-## 📌 Project Overview
-This project simulates a multiprogramming environment where multiple processes (CPU-bound, I/O-bound, and memory-intensive) compete for CPU time.  
-An **Adaptive CPU Allocator** dynamically adjusts scheduling weights for each process based on real-time CPU utilization trends.  
-The system compares:
-- **Round-Robin (Baseline Scheduler)**
-- **Adaptive Scheduling (Heuristic-based)**
+## 1. Overview
+This project implements an **Adaptive Resource Allocation System** that assigns tasks to resources based on given capacities and demands.
 
-The project includes full logging, plotting, and fairness evaluation using **Jain's Fairness Index**.
+It includes:
 
----
+- A **Flask backend API** (`/allocate`)
+- A fully functional **frontend UI** (`frontend/`)
+- Results table, usage summary, bar charts, and CSV export
+- Auto-filled values for fast demo
+- LocalStorage support for persistence
 
-## 🧩 Modules Implemented
-### 1️⃣ Simulator  
-- Implements CPU, I/O, and memory-bound process behavior  
-- Round-Robin scheduler with time slices  
-- Tracks CPU time, wait time, and execution history  
-
-### 2️⃣ Monitor  
-- Periodically samples process CPU time and wait time  
-- Stores historical data for analysis  
-- Basis for allocator decision-making  
-
-### 3️⃣ Adaptive Allocator  
-- Computes CPU allocation weights using CPU delta  
-- Includes basic + aggressive heuristic versions  
-- Dynamically updates weights for fairness and efficiency  
-
-### 4️⃣ Controller / Experiment Runner  
-- Runs full experiments end-to-end  
-- Integrates simulator + monitor + allocator  
-- Logs results into CSV format  
-
-### 5️⃣ Plotting & Summary Tools  
-- Graphs CPU usage over time  
-- Graphs weight updates over time  
-- Computes fairness metrics  
-- Summarizes CPU usage distribution  
+The system is designed to be simple, fast, and ideal for viva/demo presentation.
 
 ---
 
-## 📁 Project Structure
+## 2. Folder Structure
 ```
 adaptive-resource-allocation/
-│
-├── src/
-│   ├── simulator/
-│   ├── monitor/
-│   ├── allocator/
-│   └── controller/
-│
-├── scripts/
-│   ├── plot_results.py
-│   └── summarize_results.py
-│
-├── workloads/
-│   └── mix1.json
-│
-├── results/
-│   └── (CSV logs and plots generated here)
-│
-├── requirements.txt
-├── README.md
-└── .gitignore
+├─ frontend/
+│  ├─ index.html
+│  ├─ style.css
+│  ├─ app.js
+│  └─ assets/
+├─ resource_allocation.py
+├─ test_server.py
+├─ requirements.txt
+├─ docs/
+├─ src/
+└─ workloads/
 ```
 
 ---
 
-## 🚀 How to Run the Project
+## 3. How to Run the Project (Local Demo)
 
-### 1️⃣ Activate Virtual Environment
+### Step 1 — Open project folder
 ```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+cd "C:\Users\HARSHIL SOMISETTY\Desktop\adaptive-resource-allocation"
 ```
 
-### 2️⃣ Install Dependencies
+### Step 2 — Activate virtual environment  
+If venv exists:
 ```powershell
+.\venv\Scripts\Activate
+```
+
+If not, create new:
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate
 pip install -r requirements.txt
 ```
 
-### 3️⃣ Run Adaptive Scheduler
+### Step 3 — Start backend server
 ```powershell
-python src/controller/run_experiment.py --workload workloads/mix1.json --duration 10 --policy adaptive
+python test_server.py
 ```
 
-### 4️⃣ Run Round Robin Baseline
-```powershell
-python src/controller/run_baseline_rr.py --workload workloads/mix1.json --duration 10
+Output should include:
+```
+Running on http://127.0.0.1:5000
 ```
 
-### 5️⃣ Plot Results
-```powershell
-python scripts/plot_results.py results/<your_csv_file>.csv
+### Step 4 — Open frontend
+Open:
+```
+frontend/index.html
 ```
 
-### 6️⃣ Summarize Results
-```powershell
-python scripts/summarize_results.py results/<your_csv_file>.csv
+The page auto-fills:
+- Capacities: `10,8,12`
+- Demands: `4,6,11,8`
+
+Click **Run Allocation** to view results.
+
+---
+
+## 4. API Reference
+
+### Endpoint
+```
+POST /allocate
+```
+
+### Sample Request
+```json
+{
+  "num_resources": 3,
+  "capacities": [10, 8, 12],
+  "num_tasks": 4,
+  "demands": [4, 6, 11, 8],
+  "algorithm": "round_robin"
+}
+```
+
+### Sample Response
+```json
+{
+  "status": "success",
+  "allocations": [
+    {"task": 1, "resource": "R1", "allocated": 4},
+    {"task": 2, "resource": "R2", "allocated": 6},
+    {"task": 3, "resource": "R3", "allocated": 11},
+    {"task": 4, "resource": "R1", "allocated": 8}
+  ],
+  "resource_status": [
+    {"resource": "R1", "used": 12, "capacity": 10, "remaining": -2},
+    {"resource": "R2", "used": 6, "capacity": 8, "remaining": 2},
+    {"resource": "R3", "used": 11, "capacity": 12, "remaining": 1}
+  ],
+  "unallocated": []
+}
 ```
 
 ---
 
-## 📊 Output Examples
-The project automatically generates:
-- `cpu_over_time.png`  
-- `weights_over_time.png`  
-- CSV logs inside `results/`  
-- Summary CSV with total CPU per PID & Jain fairness  
+## 5. Features
 
-These outputs are used in the CA2 report.
+### Backend
+- Flask API for processing allocations
+- Automatically loads logic from `resource_allocation.py`
+- Clean error handling and JSON responses
 
----
-
-## 🔗 GitHub Repository
-**Repository Name:** adaptive-resource-allocation  
-**GitHub Link:** https://github.com/harshilsetty/adaptive-resource-allocation  
-
----
-
-## 📝 Academic Notes
-This project is completed as part of **CSE316 — Operating Systems CA2**, following all guidelines:
-- AI-guided project breakdown  
-- Modular implementation  
-- GitHub revision tracking (7+ commits)  
-- Evaluation using RR vs Adaptive  
-- Report-ready outputs  
+### Frontend
+- Modern UI (HTML + CSS + JS)
+- Auto-filled example values
+- Validations for invalid inputs
+- Allocation results table
+- Remaining capacity summary
+- Bar chart (Chart.js)
+- CSV export
+- Persistent inputs (localStorage)
 
 ---
 
-## 👨‍💻 Author
-**Harshil Somisetty**  
-B.Tech CSE, Lovely Professional University  
+## 6. Viva Demo Script (60–90 seconds)
+
+1. This is the Adaptive Resource Allocation System developed for CSE316.  
+2. The backend uses Flask and exposes a POST endpoint at `/allocate`.  
+3. The frontend takes user inputs, sends them to the backend, and displays results in a table and bar chart.  
+4. When I click Run Allocation, the backend processes the request and returns the mapping of tasks to resources.  
+5. The UI also shows remaining capacities and overloads.  
+6. The system supports CSV export, auto-filled values, and persistent inputs.  
+7. This project is modular and allows easy extension of allocation strategies.
+
+---
+
+## 7. Troubleshooting
+
+### Browser says “connection refused”
+Backend not running. Start:
+```powershell
+python test_server.py
+```
+
+### No chart visible
+Check internet (Chart.js CDN).
+
+### Wrong allocations
+Check logic inside:
+```
+resource_allocation.py
+```
+
+---
+
+## 8. Optional — Host Frontend on GitHub Pages
+To host only the static UI:
+```bash
+git subtree push --prefix frontend origin gh-pages
+```
+
+Page will be available at:
+```
+https://harshilsetty.github.io/adaptive-resource-allocation/
+```
+
+---
+
+## 9. License
+Created as part of the CSE316 course.  
+Free to reuse for learning and portfolio purposes.
+
